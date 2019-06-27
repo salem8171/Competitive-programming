@@ -1,0 +1,105 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "cpc: build active file",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "command": "/usr/bin/g++ \"${file}\" -o \"${fileDirname}/${fileBasenameNoExtension}\"",
+            "presentation": {
+                "echo": false,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "cpc: build and run active file",
+            "group": "build",
+            "command": "${fileDirname}/${fileBasenameNoExtension}",
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "dependsOn": [
+                "cpc: build active file"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "cpc: new project",
+            "command": "PROJECT=`${workspaceFolder}/.cpc/codeforces_scrapper/codeforces_scrapper.js ${input:problemNumber} ${input:problemLetter}` && cp ${workspaceFolder}/.cpc/template.cpp \"${workspaceFolder}/$PROJECT/$PROJECT.cpp\"",
+            "presentation": {
+                "echo": false,
+                "reveal": "never",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "cpc: test active file",
+            "group": "test",
+            "command": "cat \"${fileDirname}/tests/test_${input:testNumber}/input.txt\" | \"${fileDirname}/${fileBasenameNoExtension}\"",
+            "dependsOn": [
+                "cpc: build active file"
+            ],
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "g++ build active file",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "/usr/bin"
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "problemNumber",
+            "type": "promptString",
+            "description": "Problem number"
+        },
+        {
+            "id": "problemLetter",
+            "type": "promptString",
+            "description": "Problem letter"
+        },
+        {
+            "id": "testNumber",
+            "type": "promptString",
+            "description": "Test number",
+            "default": "1"
+        }
+    ],
+    "version": "2.0.0"
+}
